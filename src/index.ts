@@ -1,23 +1,31 @@
-import 'reflect-metadata'
-require('dotenv').config()
+import 'reflect-metadata';
 
-import { createExpressServer } from 'routing-controllers'
-import { db } from './memory-database'
-const port = process.env.PORT
+import { Environment } from './environment';
+import { createExpressServer } from 'routing-controllers';
+
+import { DatabaseInstanceStrategy } from './database';
 
 const app = createExpressServer({
-    routePrefix: '/v1',
+    routePrefix: '/api/v1',
     controllers: [`${__dirname}/controllers/*.controller.*`],
     validation: true,
     classTransformer: true,
     defaultErrorHandler: true,
-})
+});
+
+if (!Environment.db_type) {
+    throw new Error(
+        'DB type is not defined -- please set DB_TYPE in .env. Allowed values: mongo, postgres',
+    );
+}
+
+DatabaseInstanceStrategy.setInstanceByEnv(Environment.db_type);
 
 // Connect to In-Memory DB
-;async () => await db({ test: false })
+app.listen(Environment.port, () => {
+    console.log(
+        `[Coding Exercise] Running at http://localhost:${Environment.port}`,
+    );
+});
 
-app.listen(port, () => {
-    console.log(`[Live Coding Challenge] Running at http://localhost:${port}`)
-})
-
-export default app
+export default app;
