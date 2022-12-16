@@ -1,6 +1,6 @@
 ![BEON LOGO](https://beon.studio/blog/wp-content/themes/twentybeon/app/images/beon-purple.png)
 
-# Node / Express / MongoDB Coding Exercise
+# Node / Express / MongoDB/PostgreSQL Coding Exercise
 
 Before joining the coding interview, you should have set up the local environments for the application. Install the Packages and run `npm run dev` to start the developing server. Also, we recommend you read the code so that you are not caught off guard.
 
@@ -21,4 +21,5 @@ The coding exercise session will be more like a pair programming excercise, we w
 ## Endpoints:
 
 -   Flights => /v1/flights
--   Persons => /v1/persons
+
+Remember to set up your local environment previous to the interview. You can use MongoDB or PostgreSQL by changing the environment variable DB_TYPE in the .env file. Also remember to add the port.
