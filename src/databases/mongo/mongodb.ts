@@ -2,7 +2,7 @@ import { Database } from '../database_abstract';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-import { FlightsModel } from './models/flights.model';
+import { Flight, FlightsModel } from './models/flights.model';
 
 export class MongoStrategy extends Database {
     constructor() {
@@ -42,7 +42,28 @@ export class MongoStrategy extends Database {
         })();
     }
 
+    public async getFlightById(flightId: string) {
+        return FlightsModel.findById(flightId);
+    }
+
     public async getFlights() {
         return FlightsModel.find({});
     }
+
+		public async getPassengers(flightId: string) {
+			return FlightsModel.findById(flightId).passengerList;
+		}
+
+		public async addPassengerToFlight(flightId: string, passengerId: string): Promise<Flight> {
+			const flight = await this.getFlightById(flightId);
+
+			if(!flight) {
+				throw new Error('Flight not found.')
+			}
+
+			flight.passengerList.push(passengerId)
+			await flight.save();
+
+			return flight;
+		}
 }

@@ -1,10 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
 
-interface Flight {
+export interface Flight {
     code: string;
     origin: string;
     destination: string;
     status: string;
+		passengerList: string[];
 }
 
 const schema = new Schema<Flight>(
@@ -13,6 +14,7 @@ const schema = new Schema<Flight>(
         origin: { required: true, type: String },
         destination: { required: true, type: String },
         status: String,
+				passengerList: [String]
     },
     { timestamps: true },
 );

@@ -7,6 +7,8 @@ import {
     Body,
 } from 'routing-controllers';
 import { FlightsService } from '../services/flights.service';
+import { Person } from '../databases/mongo/models/persons.model';
+import { Flight } from '../databases/mongo/models/flights.model';
 
 @JsonController('/flights', { transformResponse: false })
 export default class FlightsController {
@@ -48,4 +50,14 @@ export default class FlightsController {
             data: await this._flightsService.addFlight(flight),
         };
     }
+
+		@Get('/:flightId')
+		async getPassengers(@Param('flightId') flightId: string): Promise<Person[]> {
+			return await this._flightsService.getPassengers(flightId);
+		}
+		
+		@Post('/addPassenger')
+		async addPassengerToFlight(@Body() data: {flightId: string; passengerId: string;}): Promise<Flight> {
+			return await this._flightsService.addPassengerToFlight(data.flightId, data.passengerId);
+		}
 }

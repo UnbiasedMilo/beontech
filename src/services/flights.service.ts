@@ -1,5 +1,7 @@
 import { Database } from '../databases/database_abstract';
 import { DatabaseInstanceStrategy } from '../database';
+import { Person } from '../databases/mongo/models/persons.model';
+import { Flight } from '../databases/mongo/models/flights.model';
 
 export class FlightsService {
     private readonly _db: Database;
@@ -24,4 +26,12 @@ export class FlightsService {
     }) {
         return this._db.addFlight(flight);
     }
+
+		public async getPassengers(flightId: string): Promise<Person[]> {
+			return this._db.getPassengers(flightId);
+		}
+
+		public async addPassengerToFlight(flightId: string, passengerId: string): Promise<Flight> {
+			return this._db.addPassengerToFlight(flightId, passengerId);
+		}
 }
